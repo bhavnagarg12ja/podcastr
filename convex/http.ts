@@ -1,13 +1,15 @@
-import type { WebhookEvent } from '@clerk/nextjs/server';
 import { httpRouter } from 'convex/server';
-import { Webhook } from 'svix';
-import { internal } from './_generated/api';
 import { httpAction } from './_generated/server';
+import { internal } from './_generated/api';
+import type { WebhookEvent } from '@clerk/backend';
+import { Webhook } from 'svix';
 
 const handleClerkWebhook = httpAction(async (ctx, request) => {
   const event = await validateRequest(request);
   if (!event) {
-    return new Response('Invalid request', { status: 400 });
+    return new Response('Error occured', {
+      status: 400,
+    });
   }
   switch (event.type) {
     case 'user.created':
